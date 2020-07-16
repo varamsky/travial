@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:travial/screens/home_screen.dart';
+import 'package:travial/screens/login_screen.dart';
 
-void main() => runApp(new MyApp());
+void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
   
@@ -9,8 +9,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter App',
-      home: HomeScreen(),
+      title: 'Travial App',
+      home: LoginScreen(),
     );
   }
 }
