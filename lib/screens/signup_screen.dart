@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:travial/auth/auth_status_enum.dart';
 import 'package:travial/auth/main_auth.dart';
 import 'package:travial/screens/home_screen.dart';
 import 'package:travial/screens/login_screen.dart';
@@ -144,7 +145,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
 
                         if(_nameValidate == true && _emailValidate == true &&_passValidate == true){
-                          FirebaseUser user = await auth.signUp(_emailEdit.text,_passwordEdit.text);
+                          FirebaseUser user = await auth.signUpWithEmail(_emailEdit.text,_passwordEdit.text);
                           if(user == null){
                             print('No User');
 
@@ -153,12 +154,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             );
                           }
                           else {
+                            UserUpdateInfo userUpdateInfo = UserUpdateInfo();
+                            userUpdateInfo.displayName = _nameEdit.text;
+                            user.updateProfile(userUpdateInfo);
                             print('user with email ${user.email} is logged in');
-                            Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => HomeScreen(user: user,)));
+                            Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => HomeScreen(user: user,auth: auth,whichSignIn: WhichSignIn.WITH_EMAIL,)));
                           }
-
                         }
-
                       },
                     child: Text('SIGN UP'),
                   ),

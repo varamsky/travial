@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:travial/auth/auth_status_enum.dart';
 import 'package:travial/auth/main_auth.dart';
 import 'package:travial/screens/home_screen.dart';
 import 'package:travial/screens/signup_screen.dart';
@@ -111,7 +112,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         });
 
                         if(_emailValidate == true &&_passValidate == true){
-                          FirebaseUser user = await auth.signIn(_emailEdit.text,_passwordEdit.text);
+                          FirebaseUser user = await auth.signInWithEmail(_emailEdit.text,_passwordEdit.text);
                           if(user == null){
                             print('No User');
 
@@ -121,9 +122,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           }
                           else {
                             print('user with email ${user.email} is logged in');
-                            Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => HomeScreen(user: user,)));
+                            Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => HomeScreen(auth: auth,user: user,whichSignIn: WhichSignIn.WITH_EMAIL,)));
                           }
-
                         }
                       },
                       child: Text('LOGIN'),
@@ -151,6 +151,25 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         ],
                     ),
+                  ),
+                  RaisedButton(
+                    color: Colors.red,
+                    child: Text('SignIn With Google',style: TextStyle(color: Colors.white),),
+                    onPressed: () async{
+                      FirebaseUser user = await auth.signInWithGoogle();
+
+                      if(user == null){
+                        print('No User');
+
+                        Scaffold.of(context).showSnackBar(
+                          SnackBar(content: Text('Google SignIn Error.')),
+                        );
+                      }
+                      else {
+                        print('user with email ${user.email} is logged in');
+                        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => HomeScreen(auth: auth,user: user,whichSignIn: WhichSignIn.WITH_GOOGLE,)));
+                      }
+                    },
                   ),
                 ],
               ),

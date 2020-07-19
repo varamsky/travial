@@ -3,3 +3,8 @@ enum AuthStatus {
   NOT_LOGGED_IN,
   LOGGED_IN,
 }
+
+enum WhichSignIn{
+  WITH_GOOGLE,
+  WITH_EMAIL,
+}
