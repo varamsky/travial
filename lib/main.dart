@@ -10,6 +10,12 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Travial App',
+      theme: ThemeData(
+        primaryColor: Colors.white,
+        textTheme: TextTheme(
+          headline1: TextStyle(color: Colors.black,fontSize: 20.0),
+        ),
+      ),
       home: LoginScreen(),
     );
   }
