@@ -5,6 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:travial/auth/auth_status_enum.dart';
 import 'package:travial/auth/main_auth.dart';
+import 'package:travial/screens/login_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
   final MainAuth auth;
@@ -26,6 +27,59 @@ class ProfileScreen extends StatelessWidget {
         appBar: AppBar(
           title: Text('Profile'),
           centerTitle: true,
+          actions: <Widget>[
+            IconButton(
+                icon: Icon(Icons.power_settings_new),
+                onPressed: () {
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: Text('Logout'),
+                          content: Text('Do you want to log out?'),
+                          actions: <Widget>[
+                            RaisedButton(
+                              onPressed: () async {
+                                switch (whichSignIn) {
+                                  case WhichSignIn.WITH_EMAIL:
+                                    await auth
+                                        .signOutWithEmail()
+                                        .whenComplete(() {
+                                      print('Signed Out with Email');
+                                      Navigator.pushAndRemoveUntil(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (BuildContext context) =>
+                                                  LoginScreen()),
+                                          (route) => false);
+                                    });
+                                    break;
+                                  case WhichSignIn.WITH_GOOGLE:
+                                    await auth
+                                        .signOutWithGoogle()
+                                        .whenComplete(() {
+                                      print('Signed Out with Google');
+                                      Navigator.pushAndRemoveUntil(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (BuildContext context) =>
+                                                  LoginScreen()),
+                                          (route) => false);
+                                    });
+                                    break;
+                                }
+                              },
+                              child: Text('LOG OUT'),
+                            ),
+                            RaisedButton(
+                              onPressed: () => Navigator.of(context).pop(),
+                              child: Text('CANCEL'),
+                            ),
+                          ],
+                        );
+                      });
+                }),
+          ],
         ),
         body: SingleChildScrollView(
           child: Stack(
